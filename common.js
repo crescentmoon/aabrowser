@@ -15,7 +15,7 @@ function titleOfFilename(name){
 function fixStylesheet(src){
 	var ua = navigator.userAgent
 	console.log(ua)
-	if(ua.search(/Safari\/5/) >= 0){ /* Safari 5 */
+	if(ua.search(/Version\/5\.[0-9\.]* Safari\/5/) >= 0){ /* Safari 5 */
 		var link = document.createElement('link')
 		link.setAttribute("rel", "stylesheet")
 		link.setAttribute("type", "text/css")
