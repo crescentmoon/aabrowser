@@ -1,0 +1,60 @@
+/* for mlt.html */
+
+html {
+	height:100%;
+}
+
+body {
+	margin:0px 0px 0px 0px;
+	height:100%;
+	display:flex;
+}
+
+navi {
+	width:16em;
+	height:100%;
+	overflow-y:scroll;
+}
+
+.filename, .section, .remark {
+	margin:4px 4px 4px 4px;
+	height:1.5em;
+	overflow-x:hidden;
+	white-space: nowrap;
+}
+
+.filename {
+	background-color:#aacccc;
+}
+
+.section {
+	background-color:#aaccaa;
+}
+
+.section:hover{
+	background-color:#cceecc;
+}
+
+.filename a, .section a, .remark a {
+	display:block;
+	width:100%;
+	height:100%;
+	text-decoration:none;
+}
+
+article {
+	width:100%;
+	height:100%;
+	overflow-y:scroll;
+}
+
+.aa {
+	font-family: 'Yaruo PGothic', Saitamaar, Textar, 'MS　Pゴシック';
+	font-size: 16px;
+	line-height:18px;
+	white-space: pre;
+}
+
+.aa:nth-child(even){
+	background-color:#efefef;
+}
