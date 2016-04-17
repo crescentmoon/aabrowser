@@ -97,3 +97,5 @@ function do_onload(){
 	var pain = makePain(1)
 	makeFolder([], pain, aaindex)
 }
+
+fixStylesheet("index-old.css")

@@ -11,3 +11,16 @@ function titleOfFilename(name){
 	}
 	return result
 }
+
+function fixStylesheet(src){
+	var ua = navigator.userAgent
+	console.log(ua)
+	if(ua.search(/Safari\/5/) >= 0){ /* Safari 5 */
+		var link = document.createElement('link')
+		link.setAttribute("rel", "stylesheet")
+		link.setAttribute("type", "text/css")
+		link.setAttribute("href", src)
+		var head = document.getElementsByTagName('head')[0]
+		head.appendChild(link)
+	}
+}

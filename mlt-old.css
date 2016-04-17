@@ -1,0 +1,13 @@
+/* for mlt.html with old browsers */
+
+body {
+	display:block;
+}
+
+navi {
+	float:left;
+}
+
+article {
+	width:auto;
+}

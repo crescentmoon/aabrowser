@@ -167,3 +167,5 @@ function do_onload(){
 		}
 	}
 }
+
+fixStylesheet("mlt-old.css")

@@ -1,0 +1,9 @@
+/* for index.html with old browsers */
+
+#root {
+	display:block;
+}
+
+.pain {
+	float:left;
+}
