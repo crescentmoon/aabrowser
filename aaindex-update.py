@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, stat, sys, codecs
+import os, stat, sys, codecs, unicodedata
 
 # settings
 
@@ -19,7 +19,8 @@ def read_dir(path, level):
 	for i in os.listdir(os.path.join(HukuTemp_dir, path)):
 		if i[0] == u'.': continue
 		if level == 0 and (i == "read me.txt" or i == "index.csv"): continue
-		rname = os.path.join(path, i)
+		ni = unicodedata.normalize("NFC", i)
+		rname = os.path.join(path, ni)
 		all_split = all_split and is_split_char(os.path.basename(path), i)
 		fname = os.path.join(HukuTemp_dir, rname)
 		if os.path.isdir(fname):
