@@ -40,12 +40,23 @@ function routeOfId(id){
 
 function setTitle(name, children){
 	var title = document.getElementsByTagName("title")[0]
-	var s = title.firstChild.nodeValue + " - " + name
+	var s
+	var titleHasTextNode = title.firstChild
+	if(titleHasTextNode){
+		s = title.firstChild.nodeValue
+		title.removeChild(title.firstChild)
+	}else{
+		s = title.text
+	}
+	s = s + " - " + name
 	if(children){
 		s = s + " (" + children.length.toString() + " files)"
 	}
-	title.removeChild(title.firstChild)
-	title.appendChild(document.createTextNode(s))
+	if(titleHasTextNode){
+		title.appendChild(document.createTextNode(s))
+	}else{
+		title.text = s
+	}
 }
 
 function indexEndOfLine(s, index){
@@ -95,9 +106,13 @@ function makePage(name, mlt){
 				eol = indexEndOfLine(mlt, eol + 1)
 			}
 			var aa = mlt.slice(i, eol)
-			var d = document.createElement("div")
+			var d = document.createElement("pre")
 			d.setAttribute("id", "aa_" + aaNumber.toString())
-			d.setAttribute("class", "aa")
+			if(aaNumber % 2 == 0){
+				d.setAttribute("class", "aa")
+			}else{
+				d.setAttribute("class", "aa even")
+			}
 			d.appendChild(document.createTextNode(aa))
 			contents.appendChild(d)
 			aaExisting = true
@@ -108,12 +123,39 @@ function makePage(name, mlt){
 	}
 }
 
-function xhr_onload(){
+function xhr_onreadystatechange(){
 	switch(xhr.readyState){
 	case 4: /* complete */
 		if(xhr.status == 0 || (xhr.status >= 200 && xhr.status < 300)){
-			var data = xhr.response
-			var text = Encoding.convert(new Uint8Array(data),
+			var data
+			if(inIE){
+				var dataString = callCStr(xhr.responseBody)
+				data = new Array(dataString.length * 2)
+				var i, j
+				j = 0
+				for(i = 0; i < dataString.length; ++i){
+					var c = dataString.charCodeAt(i)
+					data[j] = c & 0xff; ++j
+					data[j] = c >> 8; ++j
+				}
+				if(data[data.length - 1] == 0){
+					data.pop()
+				}
+				/* strip '\r' */
+				i = 0
+				j = 0
+				while(i < data.length){
+					if(data[i] != 13){
+						data[j] = data[i]
+						++j
+					}
+					++i
+				}
+				data.length = j
+			}else{
+				data = new Uint8Array(xhr.response)
+			}
+			var text = Encoding.convert(data,
 			                            {to:'UNICODE',
 			                             from:'SJIS',
 			                             type:'string'})
@@ -136,10 +178,16 @@ function xhr_onerror(){
 }
 
 function request(){
-	var url = site + requests[requestIndex].r.replace(/ /g, "%20")
-	console.log(url)
+	var rpath = requests[requestIndex].r
+	if(inIE){
+		rpath = encodeURI(rpath)
+	}else{
+		rpath = rpath.replace(/ /g, "%20")
+	}
+	var url = site + rpath
+//	console.log(url)
 	xhr = new XMLHttpRequest()
-	xhr.onload = xhr_onload
+	xhr.onreadystatechange = xhr_onreadystatechange
 	xhr.onerror = xhr_onerror
 	xhr.open("GET", url)
 	xhr.responseType = "arraybuffer"
@@ -166,6 +214,16 @@ function do_onload(){
 			setTimeout('request()',100)
 		}
 	}
+}
+
+if(inIE){
+//	var script = document.createElement("script")
+//	script.setAttribute("type", "text/vbscript")
+//	script.setAttribute("src", "mlt-ie.vbs")
+//	var head = document.getElementsByTagName("head")[0]
+//	head.appendChild(script)
+	var script = "<script type=\"text/vbscript\" src=\"mlt-ie.vbs\"></script>"
+	document.write(script)
 }
 
 fixStylesheet("mlt-old.css")

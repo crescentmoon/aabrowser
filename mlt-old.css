@@ -4,10 +4,10 @@ body {
 	display:block;
 }
 
-navi {
+#jump {
 	float:left;
 }
 
-article {
+#contents {
 	width:auto;
 }
