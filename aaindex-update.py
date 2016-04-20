@@ -28,6 +28,15 @@ def read_dir(path, level):
 			list.append((rname, child_info))
 		else:
 			list.append((rname, None))
+	if all_split:
+		i = 0
+		while i < len(list):
+			if list[i][1]:
+				s = list[i][1][0]
+				list[i:i + 1] = s
+				i += len(s)
+			else:
+				i += 1
 	return (list, all_split)
 
 info = read_dir(u"", 0)
