@@ -19,6 +19,7 @@ function removePain(level){
 	var pain
 	while(pain = document.getElementById("pain" + level.toString())){
 		document.getElementById("root").removeChild(pain)
+		++level
 	}
 }
 
