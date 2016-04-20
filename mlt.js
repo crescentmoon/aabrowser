@@ -75,10 +75,11 @@ function setTitle(name, children){
 	}else{
 		s = title.text
 	}
-	s = s + " - " + name
+	var t = titleOfFilename(name)
 	if(children){
-		s = s + " (" + children.length.toString() + " files)"
+		t = t + " (" + children.length.toString() + " files)"
 	}
+	s = t + " - " + s
 	if(titleHasTextNode){
 		title.appendChild(document.createTextNode(s))
 	}else{
