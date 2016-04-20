@@ -21,7 +21,7 @@ def read_dir(path, level):
 		if level == 0 and (i == "read me.txt" or i == "index.csv"): continue
 		ni = unicodedata.normalize("NFC", i)
 		rname = os.path.join(path, ni)
-		all_split = all_split and is_split_char(os.path.basename(path), i)
+		all_split = all_split and is_split_char(os.path.basename(path), ni)
 		fname = os.path.join(HukuTemp_dir, rname)
 		if os.path.isdir(fname):
 			child_info = read_dir(rname, level + 1)
