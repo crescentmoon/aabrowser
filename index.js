@@ -3,13 +3,13 @@
 var selectedFolders = []
 var folderMap = []
 
-function idOfRoute(route){
+function indexesToString(indexes){
 	var result = ""
-	for(var i = 0; i < route.length; ++i){
+	for(var i = 0; i < indexes.length; ++i){
 		if(result != ""){
 			result = result + "_"
 		}
-		result = result + route[i].toString()
+		result = result + indexes[i].toString()
 	}
 	return result
 }
@@ -46,15 +46,15 @@ function makePain(level){
 	return pain
 }
 
-function makeFolder(route, pain, list){
+function makeFolder(indexes, pain, list){
 	while(pain.lastChild){
 		pain.removeChild(pain.lastChild)
 	}
 	var level = levelOfPain(pain)
 	for(var i = 0; i < list.length; ++i){
-		var itemRoute = route.concat([i])
+		var itemIndexes = indexes.concat([i])
 		var rname = list[i].r
-		var id = idOfRoute(itemRoute)
+		var id = indexesToString(itemIndexes)
 		var o = document.createElement("div")
 		o.setAttribute("id", id)
 		if(list[i].l){ /* folder */
@@ -63,14 +63,14 @@ function makeFolder(route, pain, list){
 			o.appendChild(document.createTextNode(titleOfFilename(rname)))
 			if(!folderMap[id]){
 				var item = list[i]
-				item.route = itemRoute
+				item.indexes = itemIndexes
 				folderMap[id] = item
 			}
 		}else{ /* mlt */
 			o.setAttribute("class", "file level" + level.toString())
 			var a = document.createElement("a")
 			a.setAttribute("target", rname)
-			a.setAttribute("href", "mlt.html?route=" + id)
+			a.setAttribute("href", "mlt.html?i=" + id)
 			a.appendChild(document.createTextNode(titleOfFilename(rname)))
 			o.appendChild(a)
 		}
@@ -82,7 +82,7 @@ function expandFolder(node){
 	var level = levelOfPain(node.parentNode)
 	var pain = makePain(level + 1)
 	var item = folderMap[node.id]
-	makeFolder(item.route, pain, item.l)
+	makeFolder(item.indexes, pain, item.l)
 	var prev = selectedFolders[level]
 	if(prev !== node){
 		if(prev){

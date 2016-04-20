@@ -16,23 +16,23 @@ function setupSite(){
 	site = site + "HukuTemp/"
 }
 
-function aaindexGet(route){
+function aaindexGet(indexes){
 	var list = aaindex
-	for(var i = 0; i < route.length - 1; ++i){
-		list = list[route[i]].l
+	for(var i = 0; i < indexes.length - 1; ++i){
+		list = list[indexes[i]].l
 	}
-	return list[route[route.length - 1]]
+	return list[indexes[indexes.length - 1]]
 }
 
-function routeOfId(id){
+function parseIndexes(s){
 	var result = []
 	var p = 0
-	while(p < id.length){
-		var n = id.indexOf("_", p)
+	while(p < s.length){
+		var n = s.indexOf("_", p)
 		if(n < 0){
-			n = id.length
+			n = s.length
 		}
-		result = result.concat([parseInt(id.slice(p, n))])
+		result = result.concat([parseInt(s.slice(p, n))])
 		p = n + 1
 	}
 	return result
@@ -193,9 +193,9 @@ function do_onload(){
 		var kv = query[i].split("=")
 		var key = kv[0]
 		var value = kv[1]
-		if(key == "route"){
-			var route = routeOfId(value)
-			var item = aaindexGet(route)
+		if(key == "i"){
+			var indexes = parseIndexes(value)
+			var item = aaindexGet(indexes)
 			setTitle(item.r, item.s)
 			if(item.s){
 				requests = item.s
