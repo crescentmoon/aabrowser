@@ -123,35 +123,29 @@ function makePage(name, mlt){
 	}
 }
 
+function IEBinaryToArray(responseBody){
+	var dataString = callCStr(responseBody)
+	var data = new Array(dataString.length * 2)
+	var j = 0
+	for(var i = 0; i < dataString.length; ++i){
+		var c = dataString.charCodeAt(i)
+		var c1 = c & 0xff
+		if(c1 != 13) data[j++] = c1
+		var c2 = c >> 8
+		if(c2 != 13) data[j++] = c2
+	}
+	if(j > 0 && data[j - 1] == 0) --j
+	data.length = j
+	return data
+}
+
 function xhr_onreadystatechange(){
 	switch(xhr.readyState){
 	case 4: /* complete */
 		if(xhr.status == 0 || (xhr.status >= 200 && xhr.status < 300)){
 			var data
 			if(inIE){
-				var dataString = callCStr(xhr.responseBody)
-				data = new Array(dataString.length * 2)
-				var i, j
-				j = 0
-				for(i = 0; i < dataString.length; ++i){
-					var c = dataString.charCodeAt(i)
-					data[j] = c & 0xff; ++j
-					data[j] = c >> 8; ++j
-				}
-				if(data[data.length - 1] == 0){
-					data.pop()
-				}
-				/* strip '\r' */
-				i = 0
-				j = 0
-				while(i < data.length){
-					if(data[i] != 13){
-						data[j] = data[i]
-						++j
-					}
-					++i
-				}
-				data.length = j
+				data = IEBinaryToArray(xhr.responseBody)
 			}else{
 				data = new Uint8Array(xhr.response)
 			}
