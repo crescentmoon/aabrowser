@@ -188,7 +188,7 @@ function request(){
 
 function do_onload(){
 	setupSite()
-	var query = location.search.substr(1).split("&");
+	var query = location.search.substr(1).split("&")
 	for(var i = 0; i < query.length; ++i){
 		var kv = query[i].split("=")
 		var key = kv[0]

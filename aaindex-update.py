@@ -55,4 +55,4 @@ def write_index(list, level):
 
 write("var aaindex = ")
 write_index (info[0], 1)
-write(";\n")
+write("\n")

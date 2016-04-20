@@ -23,7 +23,7 @@ function folderClass(level, selected){
 	if(selected){
 		result = "selected " + result
 	}
-	return result;
+	return result
 }
 
 function removePain(level){
