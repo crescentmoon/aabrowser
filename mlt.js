@@ -89,23 +89,21 @@ function makePage(name, mlt){
 		i = indexEndOfLine(mlt, 0) + 1
 	}
 	while(i < mlt.length){
-		var eol = indexEndOfLine(mlt, i)
-		if(i == eol){
-			++i;
+		eol = mlt.indexOf("\n[SPLIT]", i)
+		if(eol == i){
+			i = indexEndOfLine(mlt, 0) + 1 /* empty */
 			continue
+		}else if(eol < 0){
+			eol = mlt.length
 		}
-		if(mlt.slice(eol + 1, eol + 8) == "[SPLIT]"){
+		var aa = mlt.slice(i, eol)
+		if(aa.indexOf("\n") < 0){
 			if(!aaExisting && prev){
 				prev.setAttribute("class", "remark")
 			}
-			var subtitle = mlt.slice(i, eol)
-			prev = makeJump(jump, subtitle, "section")
+			prev = makeJump(jump, aa, "section")
 			aaExisting = false
 		}else{
-			while(eol < mlt.length && mlt.slice(eol + 1, eol + 8) != "[SPLIT]"){
-				eol = indexEndOfLine(mlt, eol + 1)
-			}
-			var aa = mlt.slice(i, eol)
 			var d = document.createElement("pre")
 			d.setAttribute("id", "aa_" + aaNumber.toString())
 			if(aaNumber % 2 == 0){
