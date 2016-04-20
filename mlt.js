@@ -17,11 +17,38 @@ function setupSite(){
 }
 
 function aaindexGet(indexes){
+	if(!indexes || indexes.length == 0){
+		return null
+	}
 	var list = aaindex
 	for(var i = 0; i < indexes.length - 1; ++i){
+		if(indexes[i] >= list.length){
+			return null
+		}
 		list = list[indexes[i]].l
 	}
+	if(indexes[indexes.length - 1] >= list.length){
+		return null
+	}
 	return list[indexes[indexes.length - 1]]
+}
+
+function findIndexesByName(name){
+	function find(name, list, indexes){
+		for(var i = 0; i < list.length - 1; ++i){
+			var item = list[i]
+			if(item.r == name){
+				return indexes.concat([i])
+			}else if(item.l){
+				var result = find(name, item.l, indexes.concat([i]))
+				if(result){
+					return result
+				}
+			}
+		}
+		return null
+	}
+	return find(name, aaindex, [])
 }
 
 function parseIndexes(s){
@@ -170,13 +197,7 @@ function xhr_onerror(){
 }
 
 function request(){
-	var rpath = requests[requestIndex].r
-	if(inIE){
-		rpath = encodeURI(rpath)
-	}else{
-		rpath = rpath.replace(/ /g, "%20")
-	}
-	var url = site + rpath
+	var url = site + encodeURI(requests[requestIndex].r)
 //	console.log(url)
 	xhr = new XMLHttpRequest()
 	xhr.onreadystatechange = xhr_onreadystatechange
@@ -189,22 +210,37 @@ function request(){
 function do_onload(){
 	setupSite()
 	var query = location.search.substr(1).split("&")
+	var indexes
+	var rname
 	for(var i = 0; i < query.length; ++i){
 		var kv = query[i].split("=")
 		var key = kv[0]
 		var value = kv[1]
 		if(key == "i"){
-			var indexes = parseIndexes(value)
-			var item = aaindexGet(indexes)
-			setTitle(item.r, item.s)
-			if(item.s){
-				requests = item.s
-			}else{
-				requests = [item]
-			}
-			requestIndex = 0
-			setTimeout('request()',100)
+			indexes = parseIndexes(value)
+		}else if(key == "r"){
+			rname = decodeURI(value)
 		}
+	}
+	var item = aaindexGet(indexes)
+	if(!item || (rname && item.r != rname)){
+		/* bad indexes */
+		if(rname){
+			var rightIndexes = findIndexesByName(rname)
+			if(rightIndexes){
+				var rightURI = mltURI(indexesToString(rightIndexes), rname)
+				location.assign(rightURI)
+			}
+		}
+	}else{
+		setTitle(item.r, item.s)
+		if(item.s){
+			requests = item.s
+		}else{
+			requests = [item]
+		}
+		requestIndex = 0
+		setTimeout('request()',100)
 	}
 }
 

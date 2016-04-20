@@ -3,17 +3,6 @@
 var selectedFolders = []
 var folderMap = []
 
-function indexesToString(indexes){
-	var result = ""
-	for(var i = 0; i < indexes.length; ++i){
-		if(result != ""){
-			result = result + "_"
-		}
-		result = result + indexes[i].toString()
-	}
-	return result
-}
-
 function levelOfPain(pain){
 	return parseInt(pain.id.slice(4)) /* skip "pain" */
 }
@@ -70,7 +59,7 @@ function makeFolder(indexes, pain, list){
 			o.setAttribute("class", "file level" + level.toString())
 			var a = document.createElement("a")
 			a.setAttribute("target", rname)
-			a.setAttribute("href", "mlt.html?i=" + id)
+			a.setAttribute("href", mltURI(id, rname))
 			a.appendChild(document.createTextNode(titleOfFilename(rname)))
 			o.appendChild(a)
 		}

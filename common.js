@@ -1,5 +1,20 @@
 /* for index.html and mlt.html */
 
+function indexesToString(indexes){
+	var result = ""
+	for(var i = 0; i < indexes.length; ++i){
+		if(result != ""){
+			result = result + "_"
+		}
+		result = result + indexes[i].toString()
+	}
+	return result
+}
+
+function mltURI(indexesString, name){
+	return "mlt.html?i=" + indexesString + "&r=" + encodeURI(name)
+}
+
 function titleOfFilename(name){
 	var result = name
 	var i = result.lastIndexOf("/")
