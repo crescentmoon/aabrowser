@@ -193,7 +193,7 @@ function xhr_onreadystatechange(){
 	}
 }
 
-function xhr_onerror(){
+function xhr_ontimeout(){
 	console.log(xhr.statusText)
 }
 
@@ -202,9 +202,10 @@ function request(){
 //	console.log(url)
 	xhr = new XMLHttpRequest()
 	xhr.onreadystatechange = xhr_onreadystatechange
-	xhr.onerror = xhr_onerror
+	xhr.ontimeout = xhr_ontimeout
 	xhr.open("GET", url)
 	xhr.responseType = "arraybuffer"
+	xhr.timeout = 10000 /* 10 seconds */
 	xhr.send(null)
 }
 
