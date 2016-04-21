@@ -168,7 +168,9 @@ function IEBinaryToArray(responseBody){
 function xhr_onreadystatechange(){
 	switch(xhr.readyState){
 	case 4: /* complete */
-		if(xhr.status == 0 || (xhr.status >= 200 && xhr.status < 300)){
+		if(xhr.status == 200
+		   || (xhr.status == 0 && xhr.response)) /* file://... in Safari */
+		{
 			var data
 			if(inIE){
 				data = IEBinaryToArray(xhr.responseBody)
