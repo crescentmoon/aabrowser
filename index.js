@@ -49,7 +49,10 @@ function makeFolder(indexes, pain, list){
 		o.setAttribute("id", id)
 		if(list[i].l){ /* folder */
 			o.setAttribute("class", folderClass(level, false))
-			o.setAttribute("onclick", "expandFolder(document.getElementById(\"" + id + "\"))")
+			o.setAttribute("onclick",
+			               "expandFolder(document.getElementById(\""
+			               + id
+			               + "\"))")
 			o.appendChild(document.createTextNode(titleOfFilename(rname)))
 			if(!folderMap[id]){
 				var item = list[i]
