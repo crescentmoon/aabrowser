@@ -246,13 +246,11 @@ function do_onload(){
 }
 
 if(inIE){
-//	var script = document.createElement("script")
-//	script.setAttribute("type", "text/vbscript")
-//	script.setAttribute("src", "mlt-ie.vbs")
-//	var head = document.getElementsByTagName("head")[0]
-//	head.appendChild(script)
-	var script = "<script type=\"text/vbscript\" src=\"mlt-ie.vbs\"></script>"
-	document.write(script)
+	var script = document.createElement("script")
+	script.setAttribute("type", "text/vbscript")
+	script.setAttribute("src", "mlt-ie.vbs")
+	var head = document.getElementsByTagName("head")[0]
+	head.appendChild(script)
 }
 
 fixStylesheet("mlt-old.css")
